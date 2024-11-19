@@ -1,0 +1,26 @@
+import { defineSchema, defineTable, defineField } from 'convex/schema';
+
+export default defineSchema({
+  users: defineTable({
+    username: defineField('string'),
+    email: defineField('string'),
+    createdAt: defineField('datetime'),
+    profilePicUrl: defineField('string').optional(),
+    isOnline: defineField('boolean').optional(),
+  }),
+  channels: defineTable({
+    name: defineField('string'),
+    createdBy: defineField('ref').to('users'),
+    createdAt: defineField('datetime'),
+    description: defineField('string').optional(),
+    isPrivate: defineField('boolean').default(false),
+  }),
+  messages: defineTable({
+    content: defineField('string'),
+    user: defineField('ref').to('users'),
+    channel: defineField('ref').to('channels'),
+    timestamp: defineField('datetime'),
+    type: defineField('string').default('text'),
+    attachments: defineField('array').of('string').optional(),
+  }),
+});
